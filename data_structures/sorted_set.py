@@ -1,4 +1,4 @@
-from typing import TypeVar, Generic
+from typing import Iterator, TypeVar, Generic
 import random
 import bisect
 
@@ -45,6 +45,18 @@ class SortedSet(Generic[T]):
     def get(self, idx: int) -> T:
         return self.__data[idx]
     
+    def get_last(self) -> T:
+        return self.__data[-1]
+
+    def __iter__(self) -> Iterator[T]:
+        return iter(self.__data)
+    
+    def __getitem__(self, index) -> T:
+        return self.__data[index]
+
+    def __setitem__(self, index, value):
+        self.__data[index] = value
+
 
     @property 
     def data(self) -> list[T]:

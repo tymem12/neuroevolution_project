@@ -3,6 +3,10 @@ from __future__ import annotations
 
 class NodeGene(GeneNEAT):
 
+    #that is first idea to know which node belongs to which layer (x,y) parameters. We can diffrentiate which node
+    __x : float
+    __y : float
+
 
 
     def __init__(self, innovation_number: int) -> NodeGene:
@@ -17,6 +21,27 @@ class NodeGene(GeneNEAT):
     
     def __repr__(self) -> str:
         return self.__str__()
+    
+    @property
+    def x(self)-> float:
+        return self.__x
+    
+    @x.setter
+    def x(self, x: float):
+        self.__x = x
+
+
+    @property
+    def y(self)-> float:
+        return self.__y
+    
+    @y.setter
+    def y(self, y: float):
+        self.__y = y
+
+
+
+
 
 class ConnectionGene(GeneNEAT):
     __from_node : NodeGene
