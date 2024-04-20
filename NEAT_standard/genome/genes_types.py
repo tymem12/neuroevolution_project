@@ -1,5 +1,7 @@
-from NEAT_standard.genome.gene_neat import GeneNEAT
+import copy
 from __future__ import annotations
+from NEAT_standard.genome.gene_neat import GeneNEAT
+
 
 class NodeGene(GeneNEAT):
 
@@ -55,6 +57,7 @@ class ConnectionGene(GeneNEAT):
         # to super constructor or to dont callcualte it and just use dynamic creation 
         self.__from_node = from_node
         self.__to_node = to_node
+        self.__enable = True
 
 
     def __str__(self):
@@ -65,6 +68,11 @@ class ConnectionGene(GeneNEAT):
     
     def __eq__(self, other: ConnectionGene) -> bool:
         return self.from_node == other.from_node and self.to_node == other.to_node
+    
+    def copy(self) -> ConnectionGene:
+        return copy.deepcopy(self)
+    
+
     
 
     

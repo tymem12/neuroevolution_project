@@ -9,9 +9,6 @@ class Genome:
     __connections : SortedSet[ConnectionGene]
     __nodes : SortedSet[NodeGene]
 
-
-
-
     def distance(self, g2 : Genome) -> float:
         highest_innovation_gene1 : int = self.__connections[-1].innovation_number()
         highest_innovation_gene2 : int = g2.__connections[-1].innovation_number()

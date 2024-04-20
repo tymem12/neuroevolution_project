@@ -1,3 +1,4 @@
+import random
 from data_structures.sorted_set import SortedSet
 from NEAT_standard.genome.genes_types import ConnectionGene, NodeGene
 from NEAT_standard.genome.genome import Genome
@@ -30,11 +31,24 @@ class NEAT:
             self.__all_connections[connection] = connection.innovation_number
         
 
+    # instead of get connection (connetion : COnnection) we can just create the deep copy
+
     def create_new_genome(self) -> Genome:
+        """
+        This genom would have only nodes withot any connections. We need to generate connections using generatr_weight"""
         g : Genome =  Genome()
         for i in range(self.__input_size + self.__output_size):
             g.nodes.add_sorted(self.get_node(i))
         return g
+
+    def generate_base_connections(self, genome: Genome):
+        """
+        It creates the connections from input to outpur nodes. It is donr be creating connection nodes and assigning random weight
+        """
+        for input_idx in range(self.__input_size):
+            connection: ConnectionGene = self.get_connection(genome.nodes[input_idx], genome.nodes[input_idx + self.__input_size])
+            connection.weight(random.random())
+            genome.connections.add_sorted(connection)
 
 
 
@@ -45,8 +59,8 @@ class NEAT:
     
     def get_node(self, idx: int) -> NodeGene:
         if idx < self.__all_nodes.size():
-            #return self.__all_nodes[idx]
-            return NodeGene(idx)   #UWAGA TUTAJ MOZE BYC ROZNICA plus jeszcze z indexami miedzu ta klasa a genomem, neat, genetypa do porwonania
+            return self.__all_nodes[idx]
+            #return NodeGene(idx)   #UWAGA TUTAJ MOZE BYC ROZNICA plus jeszcze z indexami miedzu ta klasa a genomem, neat, genetypa do porwonania
         else:
             return self.create_new_node()
 
