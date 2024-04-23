@@ -19,9 +19,6 @@ class NEAT:
 
     
     
-    def create_new_connection(self) -> ConnectionGene:
-        pass
-
     def get_connection(self, node1 : NodeGene, node2: NodeGene) -> ConnectionGene:
         connection : ConnectionGene = ConnectionGene(node1, node2)
         if connection in self.__all_connections:
@@ -29,6 +26,7 @@ class NEAT:
         else:
             connection.innovation_number(len(self.__all_connections))
             self.__all_connections[connection] = connection.innovation_number
+        return connection
         
 
     # instead of get connection (connetion : COnnection) we can just create the deep copy
@@ -36,7 +34,7 @@ class NEAT:
     def create_new_genome(self) -> Genome:
         """
         This genom would have only nodes withot any connections. We need to generate connections using generatr_weight"""
-        g : Genome =  Genome()
+        g : Genome =  Genome(self)
         for i in range(self.__input_size + self.__output_size):
             g.nodes.add_sorted(self.get_node(i))
         return g
@@ -46,9 +44,10 @@ class NEAT:
         It creates the connections from input to outpur nodes. It is donr be creating connection nodes and assigning random weight
         """
         for input_idx in range(self.__input_size):
-            connection: ConnectionGene = self.get_connection(genome.nodes[input_idx], genome.nodes[input_idx + self.__input_size])
-            connection.weight(random.random())
-            genome.connections.add_sorted(connection)
+            for output_idx in range(self.__output_size):
+                connection: ConnectionGene = self.get_connection(genome.nodes[input_idx], genome.nodes[output_idx + self.__input_size])
+                connection.weight(random.random())
+                genome.connections.add_sorted(connection)
 
 
 
@@ -68,11 +67,13 @@ class NEAT:
 
     def reset_NEAT(self, input_size: int, output_size: int, max_individuals: int):
 
+        # add here the creation of the list that store elements. not only clear them
+
         self.__max_individual = max_individuals
         self.__output_size = output_size
         self.__input_size = input_size
-        self.__all_connections.clear()
-        self.__all_nodes.clear()
+        self.__all_connections = SortedSet(lambda x : x.innovation)
+        self.__all_nodes = SortedSet(lambda x : x.innovation)
         self.__all_individuals.clear()
         self.__all_species.clear()
 

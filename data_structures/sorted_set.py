@@ -27,6 +27,9 @@ class SortedSet(Generic[T]):
         return len(self.__data)
     
     def add_sorted(self, elem: T):
+        index : int = bisect.bisect_left(self.__data, elem, key = self.__sorting_function)
+        if index != len(self.__data) and self.__data[index] == elem:
+            return
         bisect.insort(self.__data, elem, key = self.__sorting_function)
 
     def remove(self, elem: T):
