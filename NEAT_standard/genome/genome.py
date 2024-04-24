@@ -147,6 +147,12 @@ class Genome:
 
     
 
+    def evolve(self):
+        pass
+
+    def generate_species(self):
+        pass
+
 
 
     @property
